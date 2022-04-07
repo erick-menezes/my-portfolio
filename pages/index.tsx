@@ -2,27 +2,23 @@ import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react';
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import Head from 'next/head'
 import Image from 'next/image'
 
 import Select from 'react-select';
 
-import Button from '@mui/material/Button';
+import ProjectModal from '../components/ProjectModal';
 
-interface ProjectType {
-  id: number;
-  title: string;
-  description: string;
-  imagePath: string;
-  technologies: string[];
-  url: string;
-}
+import { ProjectType } from '../interfaces/HomePage';
 
 const Home: NextPage = () => {
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm();
   const [projectsFilter, setProjectsFilter] = useState<ProjectType[]>([]);
+  const [projectInfo, setProjectInfo] = useState<ProjectType>({} as ProjectType);
+  const [open, setOpen] = useState(false);
+
   const technologies = [
     { label: 'React', value: 'react' },
     { label: 'HTML', value: 'html' },
@@ -45,7 +41,8 @@ const Home: NextPage = () => {
       description: 'Aplicação de chat online inspirada no Discord, desenvolvido durante o evento Imersão React da Alura.',
       imagePath: '/assets/aluracord.png',
       technologies: ['react', 'javascript', 'html', 'css', 'nextjs', 'supabase', 'skynexUi'],
-      url: 'https://aluracord-game-community.vercel.app/',
+      githubUrl: "https://github.com/erick-menezes/aluracord-game-community",
+      projectUrl: 'https://aluracord-game-community.vercel.app/',
     },
     {
       id: 2,
@@ -53,7 +50,8 @@ const Home: NextPage = () => {
       description: 'Um protótipo de um jogo de quiz web, desenvolvido durante o evento Imersão Next da Alura.',
       imagePath: '/assets/aluraQuiz.png',
       technologies: ['react', 'javascript', 'html', 'css', 'nextjs', 'styledComponents'],
-      url: 'https://imersao-nextjs.vercel.app/',
+      githubUrl: "https://github.com/erick-menezes/imersao_nextjs",
+      projectUrl: 'https://imersao-nextjs.vercel.app/',
     },
     {
       id: 3,
@@ -61,7 +59,8 @@ const Home: NextPage = () => {
       description: 'Aplicação de visualização de vídeos do youtube, feito como projeto para o evento Imersão React da Alura.',
       imagePath: '/assets/eriflix.png',
       technologies: ['react', 'javascript', 'html', 'css', 'styledComponents', 'sass'],
-      url: 'https://eriflix.vercel.app/',
+      githubUrl: "https://github.com/erick-menezes/eriflix",
+      projectUrl: 'https://eriflix.vercel.app/',
     }
   ]
 
@@ -74,9 +73,13 @@ const Home: NextPage = () => {
   }
   
   const onSubmit = (data: any) => {
-    console.log('data', data);
-    const projectFilter = projects.filter(project => project.technologies.includes(data.technology));
+    const projectFilter = projects.filter(project => project.technologies.includes(data.value));
     setProjectsFilter(projectFilter);
+  }
+
+  const openModal = (projectInfo: ProjectType) => {
+    setProjectInfo(projectInfo);
+    setOpen(previousValue => !previousValue);
   }
 
   return (
@@ -87,49 +90,19 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full ">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-around py-8">
+      <main className="w-full">
           <div className="flex items-center justify-around w-full">
-            <Controller
-              control={control}
-              name="technology"
-              render={({ 
-                field: { onChange },
-              }) => (
-                <Select 
-                  className="w-52"
-                  onChange={(e) => onChange(e?.value)}
-                  options={technologies}
-                  defaultValue={technologies[0]}
-                />
-              )}
-            />
-            {/* <Controller
-              control={control}
-              name="letters"
-              render={({ 
-                field: { onChange },
-              }) => (
-                <Select
-                  className="w-52"
-                  onChange={(e) => onChange(e?.label)}
-                  options={['a', 'b', 'c', 'd', 'e', 'f'].map(i => ({value: i, label: i}))}
-                />
-              )}
-            /> */}
+              <Select 
+                className="w-2/12 z-50 my-10"
+                onChange={(e) => onSubmit(e)}
+                options={technologies}
+                placeholder="Selecione uma tecnologia"
+              />
           </div>
-          <Button
-            type="submit"
-            className="bg-blue-500 mt-8"
-            variant="contained"
-          >
-            Procurar
-          </Button>
-        </form>
         <div className="flex items-center justify-around w-full">
             {projectsFilter.map((project: ProjectType) => (
               <div key={project.id}>
-                <div className="relative flex flex-col items-center justify-around">
+                <div onClick={() => openModal(project)} className="group overflow-hidden relative flex flex-col items-center justify-around cursor-pointer">
                   <Image
                     className="z-0 select-none"
                     src={project.imagePath}
@@ -137,11 +110,11 @@ const Home: NextPage = () => {
                     width={350}
                     height={200}
                   />
-                  <div className="absolute bottom-3 right-5 z-10">
-                    <p>Teste</p>
+                  <div className="group-hover:animate-appear animate-disappear flex items-center justify-end bg-black/50 w-full h-10 pr-5 absolute bottom-0 z-10">
+                    <p className="text-lg text-white">{project.title}</p>
                   </div>
                 </div>
-              </div>
+              </div>  
             ))}
         </div>
       </main>
@@ -149,18 +122,10 @@ const Home: NextPage = () => {
       <footer 
         className="flex justify-center w-full align-center flex-1 py-8 border-t-[#eaeaea]-500 border absolute bottom-0"
       >
-        <a
-          className="flex justify-center align-center grow"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+          Criado por Erick Menezes, 2022
       </footer>
+      
+      <ProjectModal open={open} setOpen={setOpen} projectInfo={projectInfo} />
     </div>
   )
 }
