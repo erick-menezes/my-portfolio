@@ -13,6 +13,9 @@ import ProjectModal from '../components/ProjectModal';
 
 import { ProjectType } from '../interfaces/HomePage';
 
+import IconButton from '@mui/material/IconButton';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 const Home: NextPage = () => {
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm();
   const [projectsFilter, setProjectsFilter] = useState<ProjectType[]>([]);
@@ -89,6 +92,12 @@ const Home: NextPage = () => {
         <meta name="description" content="Portfolio page made by Erick" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {process.env.NEXT_PUBLIC_ENVIRONMENT === 'dev' && (
+        <IconButton className="absolute top-2 right-2" aria-label="delete" size="large">
+          <SettingsIcon fontSize="inherit" />
+        </IconButton>
+      )}
 
       <main className="w-full">
           <div className="flex items-center justify-around w-full">
