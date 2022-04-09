@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react';
 
 import { useForm } from "react-hook-form";
+import { gql, useQuery } from '@apollo/client';
 
 import Head from 'next/head'
 import Image from 'next/image'
@@ -16,11 +17,26 @@ import { ProjectType } from '../interfaces/HomePage';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+const PROJECTS_QUERY = gql`
+  {
+    findAllProjects {
+      name,
+      technologies,
+      githubLink,
+      projectLink,
+      imagePath,
+      description
+    }
+  }
+`;
+
 const Home: NextPage = () => {
   const { register, handleSubmit, control, watch, formState: { errors } } = useForm();
   const [projectsFilter, setProjectsFilter] = useState<ProjectType[]>([]);
   const [projectInfo, setProjectInfo] = useState<ProjectType>({} as ProjectType);
   const [open, setOpen] = useState(false);
+
+  const { data: projectData, loading, error } = useQuery(PROJECTS_QUERY);
 
   const technologies = [
     { label: 'React', value: 'react' },
@@ -109,7 +125,7 @@ const Home: NextPage = () => {
               />
           </div>
         <div className="flex items-center justify-around w-full">
-            {projectsFilter.map((project: ProjectType) => (
+            {projectData.map((project: ProjectType) => (
               <div key={project.id}>
                 <div onClick={() => openModal(project)} className="group overflow-hidden relative flex flex-col items-center justify-around cursor-pointer">
                   <Image

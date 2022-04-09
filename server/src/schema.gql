@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Project {
+  projectId: Int!
+  name: String!
+  technologies: String!
+  githubLink: String!
+  projectLink: String!
+  imagePath: String!
+  description: String
+}
+
+type Query {
+  findAllProjects: [Project!]!
+}
+
+type Mutation {
+  createProject(data: ProjectEntity!): Project!
+}
+
+input ProjectEntity {
+  name: String!
+  technologies: String!
+  githubLink: String!
+  projectLink: String!
+  imagePath: String!
+  description: String!
+}
