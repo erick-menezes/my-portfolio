@@ -418,6 +418,7 @@ dist
 .DS_Store
 *.pem
 .vscode
+server/ormconfig.json
 
 # debug
 npm-debug.log*
