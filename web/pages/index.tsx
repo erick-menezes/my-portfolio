@@ -125,7 +125,7 @@ const Home: NextPage = () => {
               />
           </div>
         <div className="flex items-center justify-around w-full">
-            {projectData.map((project: ProjectType) => (
+            {projectsFilter.map((project: ProjectType) => (
               <div key={project.id}>
                 <div onClick={() => openModal(project)} className="group overflow-hidden relative flex flex-col items-center justify-around cursor-pointer">
                   <Image

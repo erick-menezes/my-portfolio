@@ -9,8 +9,6 @@ import { ProjectResolver } from './project/project.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ProjectEntity } from './project.entity';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -22,8 +20,7 @@ import { AppService } from './app.service';
     TypeOrmModule.forRoot(),
     TypeOrmModule.forFeature([ProjectEntity])
   ],
-  controllers: [AppController],
-  providers: [ProjectResolver, AppService],
+  providers: [ProjectResolver],
 })
 
 export class AppModule {

@@ -18,6 +18,7 @@ type Query {
 
 type Mutation {
   createProject(data: ProjectEntity!): Project!
+  deleteProject(id: Int!): Int!
 }
 
 input ProjectEntity {
