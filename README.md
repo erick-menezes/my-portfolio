@@ -30,18 +30,32 @@ Not implemented yet.
 git clone https://github.com/erick-menezes/my-portfolio
 
 # Access the folder
-cd my-portfolio
+cd my-portfolio/web
 
 # Install the dependencies
 yarn install
 
 # Execute the project
-yarn start
+yarn dev
 ```
 
 ## Executing the project (Back-End):
 
-Not implemented yet.
+**Prerequisite: Node.js LTS**
+
+```
+# Clone repository
+git clone https://github.com/erick-menezes/my-portfolio
+
+# Access the folder
+cd my-portfolio/server
+
+# Install the dependencies
+yarn install
+
+# Execute the project
+yarn start or yarn start:dev (for hot-reloading)
+```
 
 ## Author
 
