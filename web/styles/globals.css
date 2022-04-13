@@ -23,3 +23,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.MuiButton-root {
+  text-transform: unset !important;
+}

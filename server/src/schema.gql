@@ -12,13 +12,21 @@ type Project {
   description: String
 }
 
+type Technology {
+  techId: Int!
+  name: String!
+  camelName: String!
+}
+
 type Query {
   findAllProjects: [Project!]!
+  findAllTechnologies: [Technology!]!
 }
 
 type Mutation {
   createProject(data: ProjectEntity!): Project!
   deleteProject(id: Int!): Int!
+  createTechnology(data: TechnologyEntity!): Technology!
 }
 
 input ProjectEntity {
@@ -28,4 +36,9 @@ input ProjectEntity {
   projectLink: String!
   imagePath: String!
   description: String!
+}
+
+input TechnologyEntity {
+  name: String!
+  camelName: String!
 }

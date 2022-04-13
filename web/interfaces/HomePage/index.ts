@@ -1,9 +1,9 @@
 export interface ProjectType {
-    id: number;
-    title: string;
+    projectId: number;
+    name: string;
     description: string;
     imagePath: string;
-    technologies: string[];
-    githubUrl: string;
-    projectUrl: string;
+    technologies: string;
+    githubLink: string;
+    projectLink: string;
 }

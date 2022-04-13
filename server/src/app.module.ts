@@ -9,6 +9,7 @@ import { ProjectResolver } from './project/project.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { ProjectEntity } from './project.entity';
+import { TechnologyEntity } from './technology.entity';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -18,7 +19,7 @@ import { ProjectEntity } from './project.entity';
       playground: true
     }),
     TypeOrmModule.forRoot(),
-    TypeOrmModule.forFeature([ProjectEntity])
+    TypeOrmModule.forFeature([ProjectEntity, TechnologyEntity])
   ],
   providers: [ProjectResolver],
 })
